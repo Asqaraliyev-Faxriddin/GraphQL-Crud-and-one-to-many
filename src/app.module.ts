@@ -17,17 +17,17 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql';
       graphiql:true,
       autoSchemaFile:join(process.cwd(), 'src/schema.gql'),
       formatError: (error: GraphQLError): GraphQLFormattedError => {
-        // Kiritilgan code qiymatini katta harfga o'tkazamiz
+
         // @ts-ignore
         const code = (error.extensions?.code || 'INTERNAL_SERVER_ERROR').toUpperCase();
       
-        // Kodga mos status raqamini aniqlaymiz
+       
         const status =
           error.message === 'this is user already exist' ? 409 :
           error.message === 'user not found' ? 404 :
           error.message === 'Validation' ? 400 :
           error.message === 'Token invalid' ? 401 :
-          error.message === 'this is user vakolat yoq' ? 403 : 500; // default
+          error.message === 'this is user vakolat yoq' ? 403 : 500; 
       
         return {
           message: error.message,

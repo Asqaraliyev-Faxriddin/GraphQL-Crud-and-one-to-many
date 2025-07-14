@@ -38,12 +38,12 @@ export class PostService {
   }
 
 
-  async update(id: number, updatePostDto: UpdatePostDto) {
+  async update(id: number, payload: UpdatePostDto) {
     let oldUser = await this.prisma.post.findFirst({where:{id}})
     if(!oldUser) throw new NotFoundException("user not found")
     let data = await this.prisma.post.update({
       where: { id },
-      data: updatePostDto,
+      data: payload,
     });
 
     return data

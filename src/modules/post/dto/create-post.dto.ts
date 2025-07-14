@@ -11,4 +11,4 @@ export class CreatePostDto {
   @Field(() => Int)
   user_id: number;
 }
-    
+   
