@@ -8,6 +8,7 @@ import { PrismaService } from './core/prisma/prisma.service';
 import { PrismaModule } from './core/prisma/prisma.module';
 import {join}  from "path"
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -24,6 +25,11 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql';
        
         const status =
           error.message === 'this is user already exist' ? 409 :
+          error.message === 'this is username already exist' ? 409 :
+          error.message === 'this is email already exist' ? 409 :
+          error.message === 'username or password incorrect' ? 409 :
+
+          
           error.message === 'user not found' ? 404 :
           error.message === 'Validation' ? 400 :
           error.message === 'Token invalid' ? 401 :
@@ -40,7 +46,7 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql';
       
       
     }),   
-    UserModule, PostModule, PrismaModule, 
+    UserModule, PostModule, PrismaModule, AuthModule, 
   
  
       

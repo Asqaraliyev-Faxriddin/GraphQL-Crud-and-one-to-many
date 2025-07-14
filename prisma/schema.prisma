@@ -17,10 +17,12 @@ datasource db {
 model User {
   id Int @id @default(autoincrement())
   username String @unique
-  lastname String
-  phone String
+  password String
+  email String @unique
   age Int
+  profile_img String @default("")
   posts Post[]
+  role String @default("USER")
   @@map("users")
 }
 

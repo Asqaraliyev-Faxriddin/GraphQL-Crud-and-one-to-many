@@ -10,35 +10,73 @@ type Post {
 }
 
 type User {
-  id: Int!
+  id: Int
   username: String!
-  lastname: String!
   age: Int!
-  phone: String!
   posts: [Post!]
+}
+
+type AuthResponse {
+  accesToken: String!
+  refreshToken: String!
 }
 
 type Query {
   getUser(name: String!): [User!]
   AllUsers: [User!]!
+  findAllPosts: [Post!]!
+  findPost(id: Int!): Post!
 }
 
 type Mutation {
   deleteUser(id: Int!): User
   updateUser(id: Int!, data: UpdateDto!): User
   createUser(data: CreateUserDto!): User
+  uploadFile(file: Upload!): String!
+  createPost(payload: CreatePostDto!): Post!
+  updatePost(id: Int!, payload: UpdatePostDto!): Post!
+  deletePost(id: Int!): Post!
+  Register(payload: RegisterDto!): AuthResponse!
+  Login(payload: LoginDto!): AuthResponse!
 }
 
 input UpdateDto {
   username: String
-  lastname: String
-  phone: String
+  email: String
+  password: String
   age: Int
 }
 
 input CreateUserDto {
   username: String!
-  lastname: String!
-  phone: String!
+  email: String!
+  password: String!
   age: Int!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CreatePostDto {
+  title: String!
+  body: String!
+  user_id: Int!
+}
+
+input UpdatePostDto {
+  title: String
+  body: String
+  user_id: Int
+}
+
+input RegisterDto {
+  email: String!
+  password: String!
+  username: String!
+  age: Float!
+}
+
+input LoginDto {
+  password: String!
+  username: String!
 }

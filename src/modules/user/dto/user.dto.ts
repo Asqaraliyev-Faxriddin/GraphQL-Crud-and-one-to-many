@@ -1,4 +1,12 @@
 import { Field, InputType, Int, PartialType } from "@nestjs/graphql";
+import { GraphQLUpload, FileUpload } from 'graphql-upload-ts';
+
+  @InputType()
+  export class UploadFileInput {
+    @Field(() => GraphQLUpload)
+    file: Promise<FileUpload>;
+  }
+
 
 @InputType()
 export class CreateUserDto{
@@ -8,13 +16,15 @@ export class CreateUserDto{
     
 
     @Field()
-    lastname:string
+    email:string
+    
 
     @Field()
-    phone:string
+    password:string
 
     @Field(()=> Int)
     age:number
+
 }
 
 
@@ -22,3 +32,5 @@ export class CreateUserDto{
 
 @InputType()
 export class UpdateDto extends PartialType(CreateUserDto){}
+
+

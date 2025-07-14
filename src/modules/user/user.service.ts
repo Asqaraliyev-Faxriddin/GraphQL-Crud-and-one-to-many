@@ -1,12 +1,16 @@
-import { ConflictException, HttpException, HttpStatus, HttpVersionNotSupportedException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ExecutionContext, HttpException, HttpStatus, HttpVersionNotSupportedException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/core/prisma/prisma.service';
 import { CreateUserDto, UpdateDto } from './dto/user.dto';
 import { GraphQLError } from 'graphql';
+import { Context } from 'vm';
+import { GqlExecutionContext } from '@nestjs/graphql';
+import { waitForDebugger } from 'inspector';
 
 @Injectable()
 export class UserService {
 
     constructor(private prisma:PrismaService){}
+   private context: ExecutionContext
   
 async getUser(username: string) {
     let oldUser = await this.prisma.user.findFirst({where:{username}})
@@ -38,6 +42,7 @@ async getUser(username: string) {
             throw new ConflictException('this is user already exist')
             
         }
+      
         let data = await this.prisma.user.create({data:payload})
 
         return data
@@ -62,4 +67,15 @@ async getUser(username: string) {
     }
 
 
+
+    async fileUpload(filename:string,){
+
+      let ctx = GqlExecutionContext.create(this.context);
+      let req = ctx.getContext().req;
+      let data = await this.prisma.user.update({where:{id:req["user"].id},data:{profile_img:filename}}) 
+      if(!data) throw new NotFoundException("user not found")
+
+      return data
+
+    }
 }
